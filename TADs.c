@@ -3,19 +3,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Função que cria uma mão
+// FunÃ§Ã£o que cria uma mÃ£o
 Mao* criaMao() {
     Mao* mao = (Mao*)malloc(sizeof(Mao));
     if (mao != NULL)
-        mao->prim = NULL;  // Representação de lista vazia
+        mao->prim = NULL;  // RepresentaÃ§Ã£o de lista vazia
+        mao->n_cartas = 0;
     return mao;
 }
 
-// Função que insere uma carta no início da mão
+// FunÃ§Ã£o que insere uma carta no inÃ­cio da mÃ£o
 int insereInicioMao(Mao* mao, Info info) {
     Carta* novaCarta = (Carta*)malloc(sizeof(Carta));
     if (novaCarta == NULL)
-        return 0;  // Falha ao alocar memória
+        return 0;  // Falha ao alocar memÃ³ria
     novaCarta->info = info;
     novaCarta->prox = mao->prim;
     if (mao->prim != NULL)
@@ -25,7 +26,7 @@ int insereInicioMao(Mao* mao, Info info) {
     return 1;  // Sucesso
 }
 
-// Função que remove uma carta da mão
+// FunÃ§Ã£o que remove uma carta da mÃ£o
 Info removeCartaMao(Mao* mao, Carta* carta) {
     Info info;
     if (carta == NULL || mao->prim == NULL)
@@ -44,14 +45,14 @@ Info removeCartaMao(Mao* mao, Carta* carta) {
     return info;
 }
 
-// Função que cria uma pilha de cartas
+// FunÃ§Ã£o que cria uma pilha de cartas
 PilhaCartas* criaPilhaCartas() {
     PilhaCartas* pilha = (PilhaCartas*)malloc(sizeof(PilhaCartas));
     pilha->topo = NULL;
     return pilha;
 }
 
-// Função que empilha uma carta na pilha
+// FunÃ§Ã£o que empilha uma carta na pilha
 void empilhaPilhaCartas(PilhaCartas* pilha, Info info) {
     CartaPilha* novaCarta = (CartaPilha*)malloc(sizeof(CartaPilha));
     novaCarta->info = info;
@@ -59,9 +60,9 @@ void empilhaPilhaCartas(PilhaCartas* pilha, Info info) {
     pilha->topo = novaCarta;
 }
 
-// Função que desempilha uma carta da pilha
+// FunÃ§Ã£o que desempilha uma carta da pilha
 Info desempilhaPilhaCartas(PilhaCartas* pilha) {
-    Info info = {0};  // Retorno de valor padrão
+    Info info = {0};  // Retorno de valor padrÃ£o
     if (pilha->topo != NULL) {
         CartaPilha* carta = pilha->topo;
         info = carta->info;
