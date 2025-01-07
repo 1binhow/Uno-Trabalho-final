@@ -30,7 +30,7 @@ typedef struct {
 
 typedef struct Jogador {
     int pontos;
-    char nome[TAM_NOME];
+    int npc;
     Mao* mao;
     struct Jogador* prox;
     struct Jogador* ant;
