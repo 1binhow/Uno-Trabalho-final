@@ -3,6 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+int destroiTAD(void* tad, void (*cb)(void*)){
+    if (tad == NULL || cb == NULL){
+        return 0;
+    }
+    cb(tad);
+    return 1;
+}
+
 // Funcao que cria um jogador
 Jogador* criaJogador(int npc, Mao* mao){
     Jogador* novo = (Jogador*)malloc(sizeof(Jogador));
@@ -47,6 +55,27 @@ int insereInicioListaCircEnc(ListaJogadores *lista, Jogador *novo){
         lista->prim = novo;
     }
     return 1;
+}
+
+void destroiListaJogadores(void* tad){
+    ListaJogadores* lista = (ListaJogadores*)tad;
+    Jogador* aux = lista->prim;
+    Jogador* tmp;
+    int retorno;
+    if (lista->prim != NULL){
+        do {
+            tmp = aux;
+            if (aux->mao){
+                retorno = destroiTAD(aux->mao, destroiMao);
+                if (retorno == 0){
+                    printf("Erro na destruicao da mao");
+                }
+            }
+            free(aux);
+            aux = tmp->prox;
+         }while (aux != lista->prim);
+    }
+    free(lista);
 }
 
 // Funcao que remove um jogador da lista de jogadores
@@ -109,6 +138,20 @@ Info removeCartaMao(Mao* mao, Carta* carta) {
     return info;
 }
 
+void destroiMao(void* tad){
+    Mao* mao = (Mao*)tad;
+
+    Carta* aux = mao->prim;
+    Carta* tmp;
+
+    while (aux != NULL){
+        tmp = aux;
+        free(aux);
+        aux = tmp->prox;
+    }
+    free(mao);
+}
+
 // Função que cria uma pilha de cartas
 PilhaCartas* criaPilhaCartas() {
     PilhaCartas* pilha = (PilhaCartas*)malloc(sizeof(PilhaCartas));
@@ -134,4 +177,17 @@ Info desempilhaPilhaCartas(PilhaCartas* pilha) {
         free(carta);
     }
     return info;
+}
+
+void destroiPilhaCartas(void* tad){
+    PilhaCartas* pilha = (PilhaCartas*) tad;
+    CartaPilha* aux = pilha->topo;
+    CartaPilha* tmp;
+
+    while(aux != NULL){
+        tmp = aux;
+        free(aux);
+        aux = tmp->prox;
+    }
+    free(pilha);
 }
