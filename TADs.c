@@ -3,6 +3,70 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Funcao que cria um jogador
+Jogador* criaJogador(int npc, Mao* mao){
+    Jogador* novo = (Jogador*)malloc(sizeof(Jogador));
+    if (novo == NULL) {
+        return NULL;
+    }
+
+    novo->ant = NULL;
+    novo->prox = NULL;
+    novo->mao = mao;
+    novo->npc = npc;
+    novo->pontos = 0;
+
+    return novo;
+}
+
+// Funcao que cria uma lista de jogadores
+ListaJogadores* criaListaJogadores(){
+    ListaJogadores* lista = (ListaJogadores*)malloc(sizeof(ListaJogadores));
+
+    return lista;
+}
+
+// Funcao que insere um jogador na lista de jogadores
+int insereInicioListaCircEnc(ListaJogadores *lista, Jogador *novo){
+    Jogador *aux;
+    if (novo == NULL)
+        return 0;
+    if (lista->prim == NULL){
+        lista->prim = novo;
+        novo->ant = lista->prim;
+        novo->prox = lista->prim;
+    }else{
+        aux = lista->prim;
+        while(aux->prox != lista->prim){
+            aux = aux->prox;
+        }
+        aux->prox = novo;
+        novo->ant = aux;
+        novo->prox = lista->prim;
+        lista->prim->ant = novo;
+        lista->prim = novo;
+    }
+    return 1;
+}
+
+// Funcao que remove um jogador da lista de jogadores
+void removeJogador (ListaJogadores* lista, Jogador* jogador){
+    (jogador->ant)->prox = jogador->prox;
+    (jogador->prox)->ant = jogador->ant;
+    free(jogador);
+}
+
+// Funcao que checa se a lista de jogadores tem so um jogador
+int ultimoJogador(ListaJogadores* lista) {
+    if (lista == NULL || lista->prim == NULL) {
+        // Lista vazia ou não inicializada
+        return 0;
+    }
+    return ((lista->prim)->prox == lista->prim);
+}
+
+
+
 // Função que cria uma mão
 Mao* criaMao() {
     Mao* mao = (Mao*)malloc(sizeof(Mao));
