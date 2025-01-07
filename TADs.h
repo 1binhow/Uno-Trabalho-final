@@ -49,6 +49,7 @@ typedef struct {
     CartaPilha* topo;
 } PilhaCartas;
 
+Jogador* criaJogador(int npc, Mao* mao);
 ListaJogadores* criaListaJogadores();
 int insereInicioListaCircEnc(ListaJogadores *lista, Jogador *novo);
 void removeJogador (ListaJogadores* lista, Jogador* jogador);
