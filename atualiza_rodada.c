@@ -105,9 +105,11 @@ void compraCarta(PilhaCartas* baralho, Mao* mao, int n){
 void inputsJogador(Mao* mao, PilhaCartas* pilha, PilhaCartas* baralho, int* cartaJogada, int* pulaVez){
     Vector2 mousePos = GetMousePosition();
     Vector2 posicaobaralho = {100, 200};
+    Rectangle botaoPula = {1000 / 2 - 100, 1000 / 2 - 50, 200, 50}; // mudar as medidas pra que funcione
     Texture2D baralhoimagem = LoadTexture("baralho.png");
     int cartaComprada = 0;
     Info cartaInfoClicada;
+    int botaoPulaAtivo = 0;
 
     // Jogada do jogador
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -119,12 +121,12 @@ void inputsJogador(Mao* mao, PilhaCartas* pilha, PilhaCartas* baralho, int* cart
             Info info_aux = desempilhaPilhaCartas(baralho);
             insereInicioMao(mao, info_aux);
             cartaComprada = 1;
+            botaoPulaAtivo = 1;
+            DrawRectangleRec(botaoPula, GRAY);
+            DrawText("Pular", WIDTH_S / 2 - MeasureText("Pular", 20) / 2, HEIGHT_S / 2 - 30, 20, RAYWHITE); // mudar as medidas pra que funcione
         }
 
-        if (cartaComprada == 1 &&
-            mousePos.x >= posicaoBotaoPular.x && mousePos.x <= posicaoBotaoPular.x + botaoPularImagem.width &&
-            mousePos.y >= posicaoBotaoPular.y && mousePos.y <= posicaoBotaoPular.y + botaoPularImagem.height) {
-            // funcao com botao para pular a vez
+        if (botaoPulaAtivo == 1 && CheckCollisionPointRec(mousePos, botaoPula) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             *pulaVez = 1;
             //******** chamar funcao que desenha o botao de pular **************
             return;
@@ -202,7 +204,6 @@ void alteraCor(CartaPilha* carta, Jogador* jogador){
     // pra mim, se for npc ele pode escolher sempre a cor da primeira carta da mao (caso nao seja preta)
     // percorre a mao ate encontrar uma carta que nao eh preta e joga ela
     // se so houver cartas pretas escolher vermelho (ou qualquer outra cor)
-
 
 }
 
